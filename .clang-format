@@ -1,0 +1,89 @@
+---
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+ColumnLimit: 110
+MaxEmptyLinesToKeep: 2
+---
+Language: Cpp
+Standard: c++11
+
+# alignment overrides
+AlignArrayOfStructures: Right
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveBitFields:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+  AlignCompound: false
+  PadOperators: false
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+  AlignCompound: false
+  PadOperators: true
+  AlignFunctionPointers: true
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+  AlignCompound: false
+  PadOperators: false
+AlignConsecutiveShortCaseStatements:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+  AlignCaseColons: false
+AlignEscapedNewlines: Left
+AlignAfterOpenBracket: BlockIndent
+AlignOperands: AlignAfterOperator
+AlwaysBreakBeforeMultilineStrings: true
+Cpp11BracedListStyle: true
+
+# pointer alignment
+DerivePointerAlignment: false
+PointerAlignment: Right
+
+# regroup includes
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex:           '^((<|")(pico)(/|\.h))'
+    Priority:        3
+    CaseSensitive:   true
+  - Regex:           '^((<|")hardware/)'
+    Priority:        3
+    SortPriority:    4
+    CaseSensitive:   true
+  - Regex:           '.*\.pio\.h"$'
+    Priority:        2
+  - Regex:           '<[[:alnum:].]+>'
+    Priority:        5
+  - Regex:           '.*'
+    Priority:        1
+    SortPriority:    0
+SortIncludes: CaseSensitive
+
+# no binpacking
+BinPackArguments: false
+AllowAllArgumentsOnNextLine: true
+BinPackParameters: true
+ExperimentalAutoDetectBinPacking: false
+
+# misc
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Inline
+KeepEmptyLinesAtTheStartOfBlocks: false
+AllowShortLoopsOnASingleLine: true
+SpacesBeforeTrailingComments: 2
+IndentCaseLabels: true
+IndentPPDirectives: BeforeHash
+
