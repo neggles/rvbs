@@ -1,5 +1,6 @@
 #pragma once
 
+#include "riscv_csr.h"
 #include <riscv_vector.h>
 
 #include <stdio.h>
@@ -145,17 +146,6 @@ static inline size_t rvv_get_vl(rvv_etype_t etype, size_t avl) {
             return -1;
     }
     return -1;
-}
-
-static inline int csrr_vlenb() {
-    int a = 0;
-    asm volatile("csrr %0, vlenb" : "=r"(a) : : "memory");
-    return a;
-}
-
-static inline void print_vlenb() {
-    int vlenb = csrr_vlenb();
-    printf("vlenb: %dB / %db\n\n", vlenb, vlenb * 8);
 }
 
 /* random generation stuff */

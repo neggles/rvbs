@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     // seed the random number generator
     srand(seed);
 
-    print_vlenb();
+    csr_print_vlenb();
 
     printf("Configuring vlen register: ");
     vlen = __riscv_vsetvl_e64m1(N);
