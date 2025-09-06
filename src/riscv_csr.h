@@ -1,8 +1,8 @@
 #pragma once
 
-#include <stdio.h>
-
 #include <riscv_vector.h>
+
+#include <stdio.h>
 
 #define GEN_CSRR_FUNC_U32(X)                                     \
     static inline uint32_t csrr_##X() {                          \

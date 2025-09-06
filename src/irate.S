@@ -39,6 +39,10 @@
 .global vectorloadtest256m2
 .global vectorloadtest256m4
 .global vectorloadtest256m8
+
+.global vec_scalar_load_test_1to1
+.global vec_scalar_load_test_1to2
+
 .global mixvectorloadstoretest128m1
 .global mixvectorloadstoretest256m1
 
@@ -1319,6 +1323,102 @@ vectorloadtest256m8_loop:
 	vle64.v v16, (arr2)
 	sub     iter, iter, n_ops
 	bgt     iter, zero, vectorloadtest256m8_loop
+	ret
+
+vec_scalar_load_test_1to1:
+	li      avl, 32
+	vsetvli vl, avl, e64, m1, ta, ma
+	addi    arr2, arr1, 128
+	li      n_ops, 10
+	add     t3, t3, n_ops
+
+vec_scalar_load_test_1to1_loop:
+	vle64.v v0, (arr1)   // 1
+	ld      t3, (arr2)   // 2
+	ld      t4, 8(arr2)
+	ld      t5, 16(arr2)
+	ld      t6, 24(arr2)
+	vle64.v v16, (arr2)  // 3
+	ld      t3, (arr1)   // 4
+	ld      t4, 8(arr1)
+	ld      t5, 16(arr1)
+	ld      t6, 24(arr1)
+	vle64.v v0, (arr1)   // 5
+	ld      t3, (arr2)   // 6
+	ld      t4, 8(arr2)
+	ld      t5, 16(arr2)
+	ld      t6, 24(arr2)
+	vle64.v v16, (arr2)  // 7
+	ld      t3, (arr1)   // 8
+	ld      t4, 8(arr1)
+	ld      t5, 16(arr1)
+	ld      t6, 24(arr1)
+	vle64.v v0, (arr1)   // 9
+	ld      t3, (arr2)   // 10
+	ld      t4, 8(arr2)
+	ld      t5, 16(arr2)
+	ld      t6, 24(arr2)
+
+	sub iter, iter, n_ops
+	bgt iter, zero, vec_scalar_load_test_1to1_loop
+	ret
+
+vec_scalar_load_test_1to2:
+	li      avl, 32
+	vsetvli vl, avl, e64, m1, ta, ma
+	addi    arr2, arr1, 128
+	li      n_ops, 15
+	add     t3, t3, n_ops
+
+vec_scalar_load_test_1to2_loop:
+	vle64.v v0, (arr1)   // 1
+	ld      t3, (arr2)   // 2
+	ld      t4, 8(arr2)
+	ld      t5, 16(arr2)
+	ld      t6, 24(arr2)
+	ld      a3, 32(arr2) // 3
+	ld      a4, 48(arr2)
+	ld      a5, 56(arr2)
+	ld      a6, 64(arr2)
+	vle64.v v0, (arr2)   // 4
+	ld      t3, (arr1)   // 5
+	ld      t4, 8(arr1)
+	ld      t5, 16(arr1)
+	ld      t6, 24(arr1)
+	ld      a3, 32(arr1) // 6
+	ld      a4, 48(arr1)
+	ld      a5, 56(arr1)
+	ld      a6, 64(arr1)
+	vle64.v v0, (arr1)   // 7
+	ld      t3, (arr2)   // 8
+	ld      t4, 8(arr2)
+	ld      t5, 16(arr2)
+	ld      t6, 24(arr2)
+	ld      a3, 32(arr2) // 9
+	ld      a4, 48(arr2)
+	ld      a5, 56(arr2)
+	ld      a6, 64(arr2)
+	vle64.v v0, (arr2)   // 10
+	ld      t3, (arr1)   // 11
+	ld      t4, 8(arr1)
+	ld      t5, 16(arr1)
+	ld      t6, 24(arr1)
+	ld      a3, 32(arr1) // 12
+	ld      a4, 48(arr1)
+	ld      a5, 56(arr1)
+	ld      a6, 64(arr1)
+	vle64.v v0, (arr2)   // 13
+	ld      t3, (arr1)   // 14
+	ld      t4, 8(arr1)
+	ld      t5, 16(arr1)
+	ld      t6, 24(arr1)
+	ld      a3, 32(arr1) // 15
+	ld      a4, 48(arr1)
+	ld      a5, 56(arr1)
+	ld      a6, 64(arr1)
+
+	sub iter, iter, n_ops
+	bgt iter, zero, vec_scalar_load_test_1to2_loop
 	ret
 
 mixvectorloadstoretest128m1:

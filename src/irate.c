@@ -46,6 +46,10 @@ extern uint64_t vectorloadtest256m1(uint64_t iterations, void *data);
 extern uint64_t vectorloadtest256m2(uint64_t iterations, void *data);
 extern uint64_t vectorloadtest256m4(uint64_t iterations, void *data);
 extern uint64_t vectorloadtest256m8(uint64_t iterations, void *data);
+
+extern uint64_t vec_scalar_load_test_1to1(uint64_t iterations, void *data);
+extern uint64_t vec_scalar_load_test_1to2(uint64_t iterations, void *data);
+
 extern uint64_t mixvectorloadstoretest128m1(uint64_t iterations, void *data);
 extern uint64_t mixvectorloadstoretest256m1(uint64_t iterations, void *data);
 
@@ -107,108 +111,81 @@ int main(int argc, char *argv[]) {
 
     printf("Estimated clock speed: %.2f GHz\n", clockSpeedGhz);
 
-    /*
-    printf("Nops per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, noptest));
-    printf("Adds per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, addtest));
-    printf("Muls per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, multest));
+    printf("Nops %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, noptest));
+    printf("Adds %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, addtest));
+    printf("Muls %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, multest));
     printf(
-        "Mixed adds and nops per clk: %.2f\n",
+        "Mixed adds and nops %.3f/clk\n",
         measureFunction(iterationsHigh, clockSpeedGhz, NULL, mixedaddnoptest)
     );
-    printf("Fadds per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, faddtest));
-    printf("Fmuls per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, fmultest));
+    printf("Fadds %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, faddtest));
+    printf("Fmuls %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, fmultest));
     printf(
-        "Mixed adds and fadds per clk: %.2f\n",
+        "Mixed adds and fadds %.3f/clk\n",
         measureFunction(iterationsHigh, clockSpeedGhz, NULL, mixedaddfaddtest)
     );
-    printf("DP Vector adds per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, vaddtest));
-    printf("DP Vector muls per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, vmultest));
+    printf("DP Vector adds %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, vaddtest));
+    printf("DP Vector muls %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, vmultest));
     printf(
-        "Mixed DP Vector muls and int muls per clk: %.2f\n",
+        "Mixed DP Vector muls and int muls %.3f/clk\n",
         measureFunction(iterationsHigh, clockSpeedGhz, NULL, mixedmulvmultest)
     );
     printf(
-        "Mixed DP Vector muls and fmuls per clk: %.2f\n",
+        "Mixed DP Vector muls and fmuls %.3f/clk\n",
         measureFunction(iterationsHigh, clockSpeedGhz, NULL, mixedfmulvmultest)
     );
+    printf("HP Vector FADD  %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, hpvfaddtest));
+    printf("SP Vector FADD  %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, spvfaddtest));
+    printf("DP Vector FADD  %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, dpvfaddtest));
+    printf("HP Vector FMUL  %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, hpvfmultest));
+    printf("SP Vector FMUL  %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, spvfmultest));
+    printf("DP Vector FMUL  %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, dpvfmultest));
+    printf("HP Vector FMADD %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, hpvfmaddtest));
+    printf("HP Vector FMACC %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, hpvfmacctest));
+    printf("SP Vector FMADD %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, spvfmaddtest));
+    printf("SP Vector FMACC %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, spvfmacctest));
+    printf("DP Vector FMADD %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, vfmaddtest));
+    printf("DP Vector FMACC %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, vfmacctest));
+    printf("64-bit loads %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, loadtest));
+    printf("64-bit stores %.3f/clk\n", measureFunction(iterationsHigh, clockSpeedGhz, sinkArr, storetest));
     printf(
-        "HP Vector FADD per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, hpvfaddtest)
-    );
-    printf(
-        "SP Vector FADD per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, spvfaddtest)
-    );
-    printf(
-        "DP Vector FADD per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, dpvfaddtest)
-    );
-    printf(
-        "HP Vector FMUL per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, hpvfmultest)
-    );
-    printf(
-        "SP Vector FMUL per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, spvfmultest)
-    );
-    printf(
-        "DP Vector FMUL per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, dpvfmultest)
-    );
-    printf(
-        "HP Vector FMADD per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, hpvfmaddtest)
-    );
-    printf(
-        "HP Vector FMACC per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, hpvfmacctest)
-    );
-    printf(
-        "SP Vector FMADD per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, spvfmaddtest)
-    );
-    printf(
-        "SP Vector FMACC per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, spvfmacctest)
-    );
-    printf(
-        "DP Vector FMADD per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, vfmaddtest)
-    );
-    printf(
-        "DP Vector FMACC per clk: %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, NULL, vfmacctest)
-    );
-    printf(
-        "64-bit loads per clk %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, loadtest)
-    );
-    printf(
-        "64-bit stores per clk %.2f\n", measureFunction(iterationsHigh, clockSpeedGhz, sinkArr, storetest)
-    );
-    printf(
-        "Mixed 64-bit loads and stores per clk %.2f\n",
+        "Mixed 64-bit loads and stores %.3f/clk\n",
         measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, mixloadstoretest)
     );
-    */
+
     printf(
-        "[vlen=2, e64, lmul=1] 128-bit loads per clk %.2f\n",
+        "[vlen=4, e64, lmul=1] 1:1 256b vec:int loads %.3f/clk\n",
+        measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, vec_scalar_load_test_1to1)
+    );
+    printf(
+        "[vlen=4, e64, lmul=1] 1:2 256b vec:int loads %.3f/clk\n",
+        measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, vec_scalar_load_test_1to2)
+    );
+
+
+    printf(
+        "[vlen=2, e64, lmul=1] 128-bit loads %.3f/clk\n",
         measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, vectorloadtest128m1)
     );
-
-    /* // seems most chips don't actually have frac lmul
     printf(
-        "[vlen=4, e64, lmul=0.5] 128-bit loads per clk %.2f\n",
-        measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, vectorloadtest256mf2)
-    );
-    */
-
-    printf(
-        "[vlen=4, e64, lmul=1] 256-bit loads per clk %.3f\n",
+        "[vlen=4, e64, lmul=1] 256-bit loads %.3f/clk\n",
         measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, vectorloadtest256m1)
     );
     printf(
-        "[vlen=4, e64, lmul=2] 512-bit loads per clk %.3f\n",
+        "[vlen=4, e64, lmul=2] 512-bit loads %.3f/clk\n",
         measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, vectorloadtest256m2)
     );
     printf(
-        "[vlen=4, e64, lmul=4] 1024-bit loads per clk %.3f\n",
+        "[vlen=4, e64, lmul=4] 1024-bit loads %.3f/clk\n",
         measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, vectorloadtest256m4)
     );
     printf(
-        "[vlen=4, e64, lmul=8] 2048-bit loads per clk %.3f\n",
+        "[vlen=4, e64, lmul=8] 2048-bit loads %.3f/clk\n",
         measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, vectorloadtest256m8)
     );
 
     printf(
-        "[vlen=4, e64, lmul=1] alternating 256-bit loads and stores per clk %.3f\n",
+        "[vlen=4, e64, lmul=1] alternating 256-bit loads and stores %.3f/clk\n",
         measureFunction(iterationsHigh, clockSpeedGhz, intTestArr, mixvectorloadstoretest128m1)
     );
     return 0;
