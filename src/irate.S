@@ -119,16 +119,13 @@ addtest_loop:
 	ret
 
 multest:
-	mv   x5, x0
-	mv   x6, x0
-	mv   t2, x0
+	li   x5, 1
+	li   x6, 2
+	li   t2, 20
 	mv   x28, x0
 	mv   x29, x0
 	mv   x30, x0
 	mv   x31, x0
-	addi x5, x5, 1
-	addi x6, x6, 2
-	addi t2, t2, 20
 
 multest_loop:
 	mul x5, x5, x6
