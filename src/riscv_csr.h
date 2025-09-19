@@ -19,6 +19,21 @@
 
 #define GEN_CSR_FUNCS_U32(X) GEN_CSRR_FUNC_U32(X) GEN_CSR_PRINT_U32(X)
 
+#define GEN_CSRR_FUNC_U64(X)                                     \
+    static inline uint64_t csrr_##X() {                          \
+        uint32_t __val = 0;                                      \
+        asm volatile("csrr %0, " #X : "=r"(__val) : : "memory"); \
+        return __val;                                            \
+    }
+
+#define GEN_CSR_PRINT_U64(X)             \
+    static inline void csr_print_##X() { \
+        uint64_t X = csrr_##X();         \
+        printf(#X ": 0x%08x\n", X);      \
+    }
+
+#define GEN_CSR_FUNCS_U64(X) GEN_CSRR_FUNC_U64(X) GEN_CSR_PRINT_U64(X)
+
 GEN_CSR_FUNCS_U32(vlenb)
 
 GEN_CSR_FUNCS_U32(vstart)
