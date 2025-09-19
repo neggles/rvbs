@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
 
     uint64_t time_diff_ms;
     double   latency;
-    float    opsPerNs, clockSpeedGhz;
+    float    clockSpeedGhz;
 
     struct timespec start_ts, end_ts = {};
 
